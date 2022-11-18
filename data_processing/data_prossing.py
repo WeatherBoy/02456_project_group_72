@@ -109,5 +109,3 @@ with open(NEW_DATA_PATH,'w') as outfile:
     outfile.write('Messege;:;Reponse\n')
     for i in range(len(new_data)):
         outfile.write('{};:;{}\n'.format(new_data[i][0],new_data[i][1]))
-
-# %%
