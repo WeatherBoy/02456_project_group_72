@@ -13,7 +13,7 @@ import numpy as np
 print(f"Current working directory: {os.getcwd()}") # for seeing working directory
 #%%
 DATA_PATH = "../data/reddit_casual.json"
-NEW_DATA_PATH = "../data/processed_reddit_casual.txt"
+NEW_DATA_PATH = "../data/processed_reddit_casual.csv"
 TESTING = True
 
 # Opening JSON file
@@ -106,7 +106,7 @@ f.close()
 
 
 with open(NEW_DATA_PATH,'w') as outfile:
-    outfile.write('Messege;:;Reponse\n')
+    outfile.write('Message;:;Response\n')
     for i in range(len(new_data)):
         outfile.write('{};:;{}\n'.format(new_data[i][0],new_data[i][1]))
 
