@@ -1,5 +1,4 @@
-
-
+#%%
 import json
 import os
 import numpy as np
@@ -11,9 +10,10 @@ import numpy as np
 
 
 # I had the JSON file in a neighbouring directory I called data:
-# print(f"Current working directory: {os.getcwd()}") # for seeing working directory
-DATA_PATH = "tutorials/data/reddit_casual.json"
-NEW_DATA_PATH = "tutorials/data/processed_reddit_casual.txt"
+print(f"Current working directory: {os.getcwd()}") # for seeing working directory
+#%%
+DATA_PATH = "../data/reddit_casual.json"
+NEW_DATA_PATH = "../data/processed_reddit_casual.txt"
 TESTING = True
 
 # Opening JSON file
@@ -109,3 +109,5 @@ with open(NEW_DATA_PATH,'w') as outfile:
     outfile.write('Messege;:;Reponse\n')
     for i in range(len(new_data)):
         outfile.write('{};:;{}\n'.format(new_data[i][0],new_data[i][1]))
+
+# %%
