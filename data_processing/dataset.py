@@ -27,8 +27,12 @@ if __name__ == '__main__':
     dataset = reditDataset('Train', csv_dir)
     loader = DataLoader(dataset)
     data = next(iter(dataset))
-    print(data['message'])
-    print(data['response'])
-
-    #for data in loader:
-    #    print(data['message'])
+    #print(type(data['message']))
+    #print(data['response'])
+    
+    for data in loader:
+        print(*data['message'])
+        print(*data['response'])
+        print('')
+        
+    
