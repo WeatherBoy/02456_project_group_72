@@ -1,3 +1,5 @@
+
+'''
 ### Extract all json conversations to get overview of content.
 import json
 import os
@@ -29,7 +31,7 @@ for linedict in data:                                   # The data is a list of 
     #outfile.write("{}:;:{}".format(keys,value))
 outfile.close()
 
-
+'''
 # lambda function for processing string, removes quotation marks and unicode-smileys
 stringProcessing = lambda x : x.replace('\"', "").encode('ascii', 'ignore').decode('ascii')
 
@@ -37,46 +39,64 @@ with open("../data/json_extract.csv",'r',encoding="utf8") as infile:
     
     new_structure =[]
     for line in infile:
-        line.split('§')
+        #print(line)
+        line = line.split('§')
         MRpaircount = 0
         MRpairadded = 0
         character = "NaN"
+
         messege = ""
         reponse = ""
         for i in range(len(line)):
+            #print(line)
             if i ==0:
                 #capture start charater
-                character == line[i]
+                character = line[i]
             elif i%2==0:
                 #check if new charater
                 if character != line[i]:
+                    character = line[i]
                     MRpaircount +=1
-                    reponse = messege
+                    #print("Messge:"+messege+"\n")
+                    #print("Reponse:"+reponse+"\n\n")
+                    
+                    if MRpaircount == MRpairadded +2:
+                        new_structure.append([messege,reponse])
+                        MRpairadded +=1
+
+                    messege = reponse
+                    reponse = ""
+                    
 
             elif i%2==1:
                 #capture new text
-                messege = messege + line[i] + " "
+                reponse = reponse + line[i] + " "
 
             #add pair when repose ended
-            if MRpaircount == MRpairadded +2:
-                new_structure.append([messege,reponse])
-        new_structure.append([messege,reponse])
+
+        #new_structure.append([messege,reponse])
 
 
 new_data = []
 count=0
 
 for l in range(len(new_structure)-1):
+    count+=1
+    if count%5000==0:
+        print(str(count) + " out of " + str(len(new_structure)))
     if [new_structure[l][0], new_structure[l][1]] not in new_data:
         new_data.append([new_structure[l][0], new_structure[l][1]])
-        count+=1
-        print(str(count) + "out of" + str(len(new_structure)))
 
 
+
+count=0
 with open("mr_reddit_casual.csv",'w',encoding="utf8") as outfile:
     outfile.write('Message§Response\n')
     for i in range(len(new_data)):
         outfile.write('{}§{}\n'.format(stringProcessing(new_data[i][0]),stringProcessing(new_data[i][1])))
+        # count +=1
+        # if count == 20:
+        #     break
 
 
 
