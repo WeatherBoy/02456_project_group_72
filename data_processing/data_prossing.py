@@ -1,3 +1,68 @@
+### Extract all json conversations to get overview of content.
+import json
+import os
+import numpy as np
+
+# I had the JSON file in a neighbouring directory I called data:
+print(f"Current working directory: {os.getcwd()}") # for seeing working directory
+DATA_PATH = "./data/reddit_casual.json"
+NEW_DATA_PATH = "./data/json_extract.csv"
+
+# Opening JSON file
+f = open(DATA_PATH)
+data = json.load(f)
+outfile = open(NEW_DATA_PATH,'w',encoding="utf-8")
+
+
+# The JSON format is abit confusing to look at so here one conversation is extraced to be one line.
+for linedict in data:                                   # The data is a list of dicts
+    for converlist in linedict.values():                # Every dict is a conversaion with key = "line" and value = conversation list
+        for messegedict in converlist:                  # Every elemet in the list is a dict with key = charater and text, and value = num-charater and "dialog"
+            for chare,dialog in messegedict.items():    # Loop over all the chaters and their dialog 
+                outfile.write("{}".format(dialog).replace("\n",""))
+                outfile.write('§')
+        outfile.write('\n')
+            #outfile.write(messege.values())
+        #print("{}:;:".format(value))
+    #outfile.write("{}:;:{}".format(keys,value))
+outfile.close()
+
+
+# lambda function for processing string, removes quotation marks and unicode-smileys
+stringProcessing = lambda x : x.replace('\"', "").encode('ascii', 'ignore').decode('ascii')
+'''
+with open("../raw.csv",'r') as infile:
+    new_structure =[]
+    for line in infile:
+        line.split('§')
+        character = "NaN"
+        previous = "error_muffin_not_found"
+        for i in range(len(line)):
+            if i%2==0:
+                if character == line[i]:
+
+
+
+    
+    
+
+    for j in i["lines"]:
+        if character == j["character"]:
+            previous = previous + " " + j["text"]
+        else:
+            if(previous != "error_muffin_not_found"):
+                new_structure.append(stringProcessing(previous))
+            previous = j["text"] #last thing said
+        
+        character = j["character"] #last person talking
+    new_structure.append(stringProcessing(previous))
+
+    #remove dublicates 
+    for l in range(len(new_structure)-1):
+        if [new_structure[l], new_structure[l+1]] not in new_data:
+            new_data.append([new_structure[l], new_structure[l+1]]) 
+
+'''
 #%%
 import json
 import os
@@ -74,7 +139,7 @@ for i in data:
         character = j["character"] #last person talking
     new_structure.append(stringProcessing(previous))
 
-
+    #remove dublicates 
     for l in range(len(new_structure)-1):
         if [new_structure[l], new_structure[l+1]] not in new_data:
             new_data.append([new_structure[l], new_structure[l+1]]) 
@@ -111,3 +176,7 @@ with open(NEW_DATA_PATH,'w') as outfile:
         outfile.write('{};:;{}\n'.format(new_data[i][0],new_data[i][1]))
 
 # %%
+
+
+
+
