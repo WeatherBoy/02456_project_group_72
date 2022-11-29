@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np 
 
 
-
-df = pd.read_csv('data/processed_reddit_casual.csv',sep = ';:;',index_col = False)
+csv_dir = "./data/mr_reddit_casual.csv"
+df = pd.read_csv(csv_dir,sep = '§',index_col = False)
 n_rows = len(df.index)
 split = 0.8
 
@@ -20,7 +20,7 @@ labels[index[train_num+val_num:]] = 'Test'
 
 
 df.loc[:,'split'] = labels
-df.to_csv('data/reddit_conversations.csv', sep=str("\""),index=False)
+df.to_csv("./data/reddit_casual_split.csv", sep='§',index=False,engine='python')
 
 
 
