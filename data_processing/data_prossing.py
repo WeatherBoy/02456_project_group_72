@@ -1,5 +1,5 @@
 
-'''
+
 ### Extract all json conversations to get overview of content.
 import json
 import os
@@ -31,7 +31,7 @@ for linedict in data:                                   # The data is a list of 
     #outfile.write("{}:;:{}".format(keys,value))
 outfile.close()
 
-'''
+
 # lambda function for processing string, removes quotation marks and unicode-smileys
 stringProcessing = lambda x : x.replace('\"', "").encode('ascii', 'ignore').decode('ascii')
 
@@ -90,7 +90,7 @@ for l in range(len(new_structure)-1):
 
 
 count=0
-with open("mr_reddit_casual.csv",'w',encoding="utf8") as outfile:
+with open("../data/mr_reddit_casual.csv",'w',encoding="utf8") as outfile:
     outfile.write('Message§Response\n')
     for i in range(len(new_data)):
         outfile.write('{}§{}\n'.format(stringProcessing(new_data[i][0]),stringProcessing(new_data[i][1])))
