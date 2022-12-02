@@ -18,6 +18,7 @@ drop_idx = []
 #print(df['Response'][34920])
 countr = 0
 counti = 0
+
 for i in range(len(df)):
     
     if pd.isna(df['Response'][i]) or  pd.isna(df['Message'][i]): #type(df['Response'][i]) == float or type(df['Message'][i]) == float:
@@ -31,7 +32,13 @@ for i in range(len(df)):
             drop_idx.append(i)
             countr += 1
             
+        if '[' in df['Response'][i]:
+            df['Response'][i] = df['Response'][i].replace('[','')
+            df['Response'][i] = df['Response'][i].replace(']','')
         
+        if '[' in df['Message'][i]:
+            df['Message'][i] = df['Message'][i].replace('[','')
+            df['Message'][i] = df['Message'][i].replace(']','')
         # If the text is in multiple lines. 
         try:
             int(df['Message'][i][0])
@@ -52,6 +59,6 @@ for i in range(len(df)):
 
 print(f"Removed {len(drop_idx)} lines")   
 df.drop(df.index[drop_idx], inplace = True)
-df.to_csv(csv_dir, sep = '§', index = False)
+df.to_csv(csv_dir.replace('.csv','_new.csv'), sep = '§', index = False)
 
 
