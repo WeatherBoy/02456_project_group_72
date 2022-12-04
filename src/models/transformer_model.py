@@ -1,7 +1,7 @@
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Script for making the transformer model
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-# Created by Group 72, s183319 on Mon Nov 28 2022
+# Created by Group 72 on Mon Nov 28 2022
 
 import torch
 from torch import nn
@@ -11,7 +11,8 @@ import copy
 
 from auxilary_for_models import clones, subsequentMask, LayerNorm, SublayerConnection, Generator
 
-## Preprocessing ##################################################################################
+
+## PREPROCESSING ##################################################################################
 class Embeddings(nn.Module):
     def __init__(self, d_model, vocab):
         super(Embeddings, self).__init__()
@@ -48,7 +49,7 @@ class PositionalEncoding(nn.Module):
         return self.dropout(x)
 
 
-## Attention ######################################################################################
+## ATTENTION ######################################################################################
 def attention(query, key, value, mask=None, dropout=None):
     "Compute 'Scaled Dot Product Attention'"
     d_k = query.size(-1)
@@ -103,7 +104,7 @@ class MultiHeadedAttention(nn.Module):
         return self.linears[-1](x)
 
 
-## Encoder ########################################################################################
+## ENCODER ########################################################################################
 class Encoder(nn.Module):
     "Core encoder is a stack of N layers"
 
@@ -137,7 +138,7 @@ class EncoderLayer(nn.Module):
         return self.sublayer[1](x, self.feed_forward)
 
 
-## Decoder ########################################################################################
+## DECODER ########################################################################################
 class Decoder(nn.Module):
     "Generic N layer decoder with masking."
 
@@ -189,7 +190,7 @@ class PositionwiseFeedForward(nn.Module):
         return x
 
 
-## Encoder-Decoder ################################################################################
+## ENCODER-DECODER ################################################################################
 class EncoderDecoder(nn.Module):
     """
     A standard Encoder-Decoder architecture. Base for this and many
@@ -215,7 +216,7 @@ class EncoderDecoder(nn.Module):
         return self.decoder(self.tgt_embed(tgt), memory, src_mask, tgt_mask)
 
 
-## make model function ############################################################################
+## MAKE MODEL FUNCTION ############################################################################
 def makeModel(
     src_vocab, tgt_vocab, N=6, d_model=512, d_ff=2048, h=8, dropout=0.1
 ):
