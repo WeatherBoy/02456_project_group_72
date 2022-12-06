@@ -81,7 +81,7 @@ if __name__ == '__main__':
     ### LOADING MODELS ###########################################################################
     loadFilename = os.path.join(SAVE_DIR, MODEL_NAME, DATA_NAME,
                            '{}-{}_{}'.format(ENCODER_N_LAYERS, DECODER_N_LAYERS, HIDDEN_SIZE),
-                            '{}_checkpoint.tar'.format(N_ITERATIONS))
+                            '{}_checkpoint.tar'.format(N_ITE_RATIONS))
     
     loadFilename_exists = False if loadFilename is None else os.path.exists(loadFilename)
     
