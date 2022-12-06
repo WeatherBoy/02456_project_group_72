@@ -26,33 +26,32 @@ USE_CUDA = torch.cuda.is_available()
 device = torch.device("cuda" if USE_CUDA else "cpu")
 
 # Wanna see how the model performs?
-EVALUATE = False
+EVALUATE = True
 
 
 #%% HYPER PARAMETERS ##############################################################################
 ### Configure model
-MODEL_NAME = 'cb_model'
+MODEL_NAME = 'cb_model2'
 ATTN_MODEL = 'dot'
 # ATTN_MODEL = 'general'
 # ATTN_MODEL = 'concat'
-HIDDEN_SIZE = 500
-ENCODER_N_LAYERS = 2
-DECODER_N_LAYERS = 2
+HIDDEN_SIZE = 256
+ENCODER_N_LAYERS = 3
+DECODER_N_LAYERS = 3
 DROPOUT = 0.1
-BATCH_SIZE = 16
+BATCH_SIZE = 128
 
 ### Configure training/optimization
-EPOCHS = 100
 CLIPPING = 50.0
-TEACHER_FORCING_RATIO = 1.0
+TEACHER_FORCING_RATIO = 0.8
 LR = 0.0001
 DECODER_LEARNING_RATIO = 5.0
-N_ITERATIONS = 4000
-PRINT_EVERY = 1
+N_ITE_RATIONS = 4000
+PRINT_EVERY = 100
 SAVE_EVERY = 500
 
 ### Configure data parameters
-MAX_LENGTH = 10  # Maximum sentence length to consider
+MAX_LENGTH = 20  # Maximum sentence length to consider
 MIN_COUNT = 3    # Minimum word count threshold for trimming
 
 ### Change to path that matches where you put the data.

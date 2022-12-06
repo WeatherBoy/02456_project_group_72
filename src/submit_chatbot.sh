@@ -1,10 +1,16 @@
 #!/bin/sh
 
+# Generate uuidv4
+ID=$(uuidgen)
+JOB=$1
+# Generate a unique job name
+JOB_NAME="$JOB-$ID"
+
 ### General options
 ### -- specify queue --
 #BSUB -q hpc
 ### -- set the job Name --
-#BSUB -J Test
+#BSUB -$JOB_NAME
 ### -- ask for number of cores (default: 1) --
 #BSUB -n 1
 ### -- specify that the cores must be on the same host --
@@ -25,14 +31,14 @@
 #BSUB -N
 ### -- Specify the output and error file. %J is the job-id --
 ### -- -o and -e mean append, -oo and -eo mean overwrite --
-#BSUB -o Output.out
-#BSUB -e Error.err
+#BSUB -o Output_%J.out
+#BSUB -e Error%J.err
 
 # here follow the commands you want to execute
 
 #module load python3/3.8.2
 source /zhome/06/a/147115/BSc_venv/bin/activate
 
-ssh -t hpc "mkdir -p ~/logs/%J"
+ssh -t hpc "mkdir -p ~/logs/$JOB_NAME"
 
-/zhome/06/a/147115/BSc_venv/bin/python3 -u /zhome/06/a/147115/02456_project_group_72/src/chatbot.py > /zhome/06/a/147115/02456_project_group_72/src/logs/%J
+/zhome/06/a/147115/BSc_venv/bin/python3 -u /zhome/06/a/147115/02456_project_group_72/src/chatbot.py > /zhome/06/a/147115/02456_project_group_72/src/logs/$JOB_NAME/output.txt

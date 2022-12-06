@@ -50,11 +50,11 @@ if __name__ == '__main__':
     '''
     dataset = reditDataset('Train',200, csv_dir)
     loader = DataLoader(dataset, batch_size=4)
-    print(len(loader))
+    #print(len(loader))
     
-    #data = next(iter(dataset))
-    #print(type(data['message']))
-    #print(data['response'])
+    message, response = next(iter(dataset))
+    print(message)
+    print(response)
     max_lengh = 0
     
     #for message, response in loader:
