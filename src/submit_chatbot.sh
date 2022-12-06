@@ -40,6 +40,6 @@ JOB_NAME="$JOB-$ID"
 source /zhome/06/a/147115/BSc_venv/bin/activate
 dir = "logs/$JOB_NAME"
 
-mkdir -p dir
+mkdir -p logs/$JOB_NAME
 
 /zhome/06/a/147115/BSc_venv/bin/python3 -u /zhome/06/a/147115/02456_project_group_72/src/chatbot.py > /zhome/06/a/147115/02456_project_group_72/src/logs/$JOB_NAME/output.txt
