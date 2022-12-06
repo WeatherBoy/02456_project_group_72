@@ -140,9 +140,10 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
             print_loss = 0
 
         if loss < best_loss:
-            directory = os.path.join(save_dir, model_name, '{}-{}_{}'.format(encoder_n_layers, decoder_n_layers, hidden_size))
             best_loss = loss
             directory = os.path.join(save_dir, model_name)
+            if not os.path.exists(directory):
+                os.makedirs(directory)
             torch.save({
                 'iteration': iteration,
                 'en': encoder.state_dict(),
