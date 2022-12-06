@@ -10,7 +10,7 @@ JOB_NAME="$JOB-$ID"
 ### -- specify queue --
 #BSUB -q hpc
 ### -- set the job Name --
-#BSUB -$JOB_NAME
+#BSUB -J $JOB_NAME
 ### -- ask for number of cores (default: 1) --
 #BSUB -n 1
 ### -- specify that the cores must be on the same host --
