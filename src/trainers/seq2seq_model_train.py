@@ -9,7 +9,7 @@ from torch import nn
 import random
 import os
 
-print(f"\n\nCurrent working directory2: \n{os.getcwd()}\n\n")
+# print(f"\n\nCurrent working directory2: \n{os.getcwd()}\n\n")
 
 from trainers.auxilary_for_trainers import batch2TrainData, maskNLLLoss
 
