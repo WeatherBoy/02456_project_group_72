@@ -1,16 +1,10 @@
 #!/bin/sh
 
-# Generate uuidv4
-ID=$(uuidgen)
-JOB=$1
-# Generate a unique job name
-JOB_NAME="$JOB-$ID"
-
 ### General options
 ### -- specify queue --
 #BSUB -q hpc
 ### -- set the job Name --
-#BSUB -J $JOB_NAME
+#BSUB -J $chatbot
 ### -- ask for number of cores (default: 1) --
 #BSUB -n 1
 ### -- specify that the cores must be on the same host --
@@ -38,8 +32,7 @@ JOB_NAME="$JOB-$ID"
 
 #module load python3/3.8.2
 source /zhome/06/a/147115/BSc_venv/bin/activate
-dir = "logs/$JOB_NAME"
 
-mkdir -p logs/$JOB_NAME
+mkdir -p logs/cb_model2
 
-/zhome/06/a/147115/BSc_venv/bin/python3 -u /zhome/06/a/147115/02456_project_group_72/src/chatbot.py > /zhome/06/a/147115/02456_project_group_72/src/logs/$JOB_NAME/output.txt
+/zhome/06/a/147115/BSc_venv/bin/python3 -u /zhome/06/a/147115/02456_project_group_72/src/chatbot.py > /zhome/06/a/147115/02456_project_group_72/src/logs/cb_model2/output.txt
