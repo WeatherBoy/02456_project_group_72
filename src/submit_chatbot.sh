@@ -38,7 +38,12 @@ JOB_NAME="$JOB-$ID"
 
 #module load python3/3.8.2
 source /zhome/06/a/147115/BSc_venv/bin/activate
+dir = "logs/$JOB_NAME"
 
-ssh -t hpc "mkdir -p ~/logs/$JOB_NAME"
+if [[ ! -e $dir ]]; then
+    mkdir $dir
+elif [[ ! -d $dir ]]; then
+    echo "$dir already exists but is not a directory" 1>&2
+fi
 
 /zhome/06/a/147115/BSc_venv/bin/python3 -u /zhome/06/a/147115/02456_project_group_72/src/chatbot.py > /zhome/06/a/147115/02456_project_group_72/src/logs/$JOB_NAME/output.txt
