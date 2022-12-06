@@ -15,16 +15,15 @@ from torch.utils.data import Dataset, DataLoader
 from models import EncoderRNN, AttnDecoderRNN
 from vocabulary import Voc
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-device = 'cuda' if torch.cuda.is_available() else False
-print(device)
 ###
 # Hyper parameters
 ##
 BATCHSIZE = 16
-EPOCHS = 100
+EPOCHS = 10
 LR = 1e-3
-max_length = 200
+max_length = 3
 hidden_size = 256
 PAD_token = 0  # Used for padding short sentences
 SOS_token = 1  # Start-of-sentence token
@@ -43,12 +42,22 @@ testloader = DataLoader(testset, batch_size=BATCHSIZE)
 
     
 
-model_path = "_best_.t7"
+model_path = "./seq_Ja/modelsaves/best_"
 
 voc = Voc("reddit")
 
 def voc_build():
     for message, response in trainloader:
+
+        for i in range(len(message)):
+            voc.addSentence(message[i])
+            voc.addSentence(response[i])
+    for message, response in valloader:
+
+        for i in range(len(message)):
+            voc.addSentence(message[i])
+            voc.addSentence(response[i])
+    for message, response in testloader:
 
         for i in range(len(message)):
             voc.addSentence(message[i])
@@ -64,29 +73,26 @@ def sentence_to_index(sentence):
     return torch.tensor(indexes, dtype=torch.long, device=device).view(-1, 1)
 
 ## Model
-print(type(voc.num_words),type(hidden_size))
-
-
-
 encoder = EncoderRNN(int(voc.num_words),int(hidden_size)).to(device)
-decoder = AttnDecoderRNN(hidden_size, voc.num_words, dropout_p=0.1).to(device)
-
+decoder = AttnDecoderRNN(hidden_size, voc.num_words, dropout_p=0.1,max_length=max_length).to(device)
 
 encoder_optimizer = optim.SGD(encoder.parameters(), lr=LR)
 decoder_optimizer = optim.SGD(decoder.parameters(), lr=LR)
 
 criterion = nn.NLLLoss()
 
-
 #One Traning loop
 def train_iter():
+    encoder.train()
+    decoder.train()
+
     teacher_forcing_ratio = 0.5
     loss_total = 0
-
+    n=0
     for message, response in trainloader:
 
         loss = 0
-        for i in range(len(BATCHSIZE)):
+        for i in range(len(message)):
             message_one = sentence_to_index(message[i])
             response_one = sentence_to_index(response[i])
 
@@ -96,7 +102,7 @@ def train_iter():
             decoder_optimizer.zero_grad()
 
             input_length = message_one.size(0)
-            print(input_length)
+            
             target_length = response_one.size(0)
 
             encoder_outputs = torch.zeros(max_length, encoder.hidden_size, device=device)
@@ -130,64 +136,65 @@ def train_iter():
                     topv, topi = decoder_output.topk(1)
                     decoder_input = topi.squeeze().detach()  # detach from history as input
 
-                    loss += criterion(decoder_output, response[di])
+                    loss += criterion(decoder_output, response_one[di])
                     if decoder_input.item() == EOS_token:
                         break
 
-            loss.backward()
-
+        loss.backward()
         encoder_optimizer.step()
         decoder_optimizer.step()
 
-    return loss.item() / target_length
+    return loss.item() / len(trainloader)
 
 #Validation
-def val_iter():
-   
-    for message, response in trainloader:
+def val_iter(set):
+    encoder.eval()
+    decoder.eval()
+    with torch.no_grad():
+        for message, response in set:
 
-        loss = 0
-        for i in range(len(message)):
+            loss = 0
+            for i in range(len(message)):
 
-            message_one = sentence_to_index(message[i])
-            response_one = sentence_to_index(response[i])
+                message_one = sentence_to_index(message[i])
+                response_one = sentence_to_index(response[i])
 
-            encoder_hidden = encoder.initHidden()
+                encoder_hidden = encoder.initHidden()
 
-            encoder_optimizer.zero_grad()
-            decoder_optimizer.zero_grad()
+                encoder_optimizer.zero_grad()
+                decoder_optimizer.zero_grad()
 
-            input_length = message_one.size(0)
-            print(input_length)
-            target_length = response_one.size(0)
+                input_length = message_one.size(0)
 
-            encoder_outputs = torch.zeros(max_length, encoder.hidden_size, device=device)
+                target_length = response_one.size(0)
 
-            for ei in range(input_length):
-                encoder_output, encoder_hidden = encoder(
-                    message_one[ei], encoder_hidden)
-                encoder_outputs[ei] = encoder_output[0, 0]
+                encoder_outputs = torch.zeros(max_length, encoder.hidden_size, device=device)
 
-            decoder_input = torch.tensor([[SOS_token]], device=device)
+                for ei in range(input_length):
+                    encoder_output, encoder_hidden = encoder(
+                        message_one[ei], encoder_hidden)
+                    encoder_outputs[ei] = encoder_output[0, 0]
 
-            decoder_hidden = encoder_hidden
+                decoder_input = torch.tensor([[SOS_token]], device=device)
 
-            for di in range(target_length):
-                decoder_output, decoder_hidden, decoder_attention = decoder(
-                    decoder_input, decoder_hidden, encoder_outputs)
-                topv, topi = decoder_output.topk(1)
-                decoder_input = topi.squeeze().detach()  # detach from history as input
+                decoder_hidden = encoder_hidden
 
-                loss += criterion(decoder_output, response[di])
-                if decoder_input.item() == EOS_token:
-                    break
+                for di in range(target_length):
+                    decoder_output, decoder_hidden, decoder_attention = decoder(
+                        decoder_input, decoder_hidden, encoder_outputs)
+                    topv, topi = decoder_output.topk(1)
+                    decoder_input = topi.squeeze().detach()  # detach from history as input
 
-    return loss.item() / target_length
+                    loss += criterion(decoder_output, response_one[di])
+                    if decoder_input.item() == EOS_token:
+                        break
+
+        return loss.item() / len(set)
 
 
 def train():
 
-    best_loss = 100
+    best_loss = 777
 
     train_loss = 0
     val_loss = 0 
@@ -197,38 +204,40 @@ def train():
         
  
         #train and find loss
-        train_loss += train_iter()
+        train_loss = train_iter()
         
-        val_loss += val_iter()
+        val_loss = val_iter(valloader)
 
 
         #if traning impores on validations set save model.
         if val_loss < best_loss:
-            torch.save(encoder.state.dict(),"encoder" + model_path)
-            torch.save(decoder.state.dict(),"decoder" + model_path)
+
+            torch.save(encoder.state_dict(), model_path + "encoder.pth")
+            torch.save(decoder.state_dict(),model_path + "decoder.pth")
 
             best_loss = val_loss
             best_epoc = epoch
 
-        print("current epoc :{}, current train loss :{} , current val loss :{}\n".format(epoch,train_loss, val_loss,))
+        print("current epoc :{}, current train loss :{} , current val loss :{}\n".format(epoch+1,train_loss, val_loss,))
 
-        print("best epoc :{}, best val loss:{}\n".format(best_epoc,best_loss))
+        print("best epoc :{}, best val loss:{}\n".format(best_epoc+1,best_loss))
  
             
 
 
 
 def test():
-    encoder = torch.load_state_dict("encoder" + model_path)
-    decoder = torch.load_state_dict("decoder " + model_path)
+    encoder = torch.load(model_path + "encoder.pth")
+    decoder = torch.load(model_path + "decoder.pth")
 
-    test_loss =  val_iter(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, decoder_optimizer, criterion, max_length=MAX_LENGTH)
+
+    test_loss =  val_iter(testloader)
+    print(test_loss)
     # show examples
     pass
 
 
 
 if __name__ == '__main__':
-    voc_build()
     train()
     test()

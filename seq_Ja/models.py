@@ -3,6 +3,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 
 
 class EncoderRNN(nn.Module):
@@ -19,8 +21,8 @@ class EncoderRNN(nn.Module):
         output, hidden = self.gru(output, hidden)
         return output, hidden
 
-    #def initHidden(self):
-    #    return torch.zeros(1, 1, self.hidden_size, device=device)
+    def initHidden(self):
+       return torch.zeros(1, 1, self.hidden_size, device=device)
 
 #%%
 
@@ -41,8 +43,8 @@ class DecoderRNN(nn.Module):
         output = self.softmax(self.out(output[0]))
         return output, hidden
 
-    #def initHidden(self):
-    #    return torch.zeros(1, 1, self.hidden_size, device=device)
+    def initHidden(self):
+       return torch.zeros(1, 1, self.hidden_size, device=device)
 
 
 # %%
@@ -79,5 +81,5 @@ class AttnDecoderRNN(nn.Module):
         output = F.log_softmax(self.out(output[0]), dim=1)
         return output, hidden, attn_weights
 
-    #def initHidden(self):
-    #    return torch.zeros(1, 1, self.hidden_size, device=device)
+    def initHidden(self):
+       return torch.zeros(1, 1, self.hidden_size, device=device)
