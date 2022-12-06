@@ -57,8 +57,8 @@ MIN_COUNT = 3    # Minimum word count threshold for trimming
 ### Change to path that matches where you put the data.
 ### I had the data in a neighbouring directory
 DATA_NAME = "movie-corpus"
-DATA_PATH = "./data/" + DATA_NAME
-#DATA_PATH = "../data/" + DATA_NAME
+#DATA_PATH = "./data/" + DATA_NAME
+DATA_PATH = "../data/" + DATA_NAME
 
 
 #%% MAIN ##########################################################################################
