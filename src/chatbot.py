@@ -46,7 +46,7 @@ CLIPPING = 50.0
 TEACHER_FORCING_RATIO = 0.8
 LR = 0.0001
 DECODER_LEARNING_RATIO = 5.0
-N_ITE_RATIONS = 4000
+N_ITERATIONS = 4000
 PRINT_EVERY = 100
 SAVE_EVERY = 500
 
@@ -81,7 +81,7 @@ if __name__ == '__main__':
     ### LOADING MODELS ###########################################################################
     loadFilename = os.path.join(SAVE_DIR, MODEL_NAME, DATA_NAME,
                            '{}-{}_{}'.format(ENCODER_N_LAYERS, DECODER_N_LAYERS, HIDDEN_SIZE),
-                            '{}_checkpoint.tar'.format(N_ITE_RATIONS))
+                            '{}_checkpoint.tar'.format(N_ITERATIONS))
     
     loadFilename_exists = False if loadFilename is None else os.path.exists(loadFilename)
     
