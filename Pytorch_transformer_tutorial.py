@@ -4,7 +4,16 @@ import torch
 from torch import nn, Tensor
 import torch.nn.functional as F
 from torch.nn import TransformerEncoder, TransformerEncoderLayer
-from torch.utils.data import dataset
+from torchtext.datasets import WikiText2, PennTreebank
+from torchtext.data.utils import get_tokenizer
+from torchtext.vocab import build_vocab_from_iterator
+import pandas as pd
+import dataset
+from torch.utils.data import Dataset, DataLoader
+import copy
+import time
+
+#from torch.utils.data import dataset
 
 class TransformerModel(nn.Module):
 
@@ -67,14 +76,20 @@ def generate_square_subsequent_mask(sz: int) -> Tensor:
     """Generates an upper-triangular matrix of -inf, with zeros on diag."""
     return torch.triu(torch.ones(sz, sz) * float('-inf'), diagonal=1)
 
-from torchtext.datasets import WikiText2, PennTreebank
-from torchtext.data.utils import get_tokenizer
-from torchtext.vocab import build_vocab_from_iterator
-import pandas as pd
+BATCHSIZE = 16
+EPOCHS = 100
+LR = 1e-3
+#C:/Users/Lenovo/Documents/GitHub/02456_project_group_72
+## Dataset
+#csv_dir = './data/reddit_casual_split.csv'
+#df = pd.read_csv(csv_dir + "reddit_casual_split.csv")
+#trainset = dataset.reditDataset('Train', csv_dir)
+#valset = dataset.reditDataset('Val', csv_dir)
+#trainset = dataset.reditDataset('Test', csv_dir)
 
-nRowsRead = 100
-df = pd.read_csv("C:/Users/Lenovo/Documents/GitHub/02456_project_group_72/data/reddit_casual_split.csv", nrows = nRowsRead)
-train_iter= (df["split"]=="train")
+#trainloader = DataLoader(trainset, batch_size=BATCHSIZE)
+#valloader = DataLoader(trainset, batch_size=BATCHSIZE)
+#testloader = DataLoader(trainset, batch_size=BATCHSIZE)
 
 train_iter = WikiText2(split='train')
 tokenizer = get_tokenizer('basic_english')
@@ -142,8 +157,6 @@ nhead = 2  # number of heads in nn.MultiheadAttention
 dropout = 0.2  # dropout probability
 model = TransformerModel(ntokens, emsize, nhead, d_hid, nlayers, dropout).to(device)
 
-import copy
-import time
 
 criterion = nn.CrossEntropyLoss()
 lr = 5.0  # learning rate
