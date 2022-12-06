@@ -106,6 +106,7 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
         checkpoint = torch.load(loadFilename, map_location=torch.device(device=device))
         start_iteration = checkpoint['iteration'] + 1
 
+    best_loss = 10
     # Training loop
     print("Training...")
     for iteration in range(start_iteration, n_iteration + 1):
@@ -138,9 +139,22 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
             print("Iteration: {}; Percent complete: {:.1f}%; Average loss: {:.4f}".format(iteration, iteration / n_iteration * 100, print_loss_avg))
             print_loss = 0
 
+        if loss < best_loss:
+            directory = os.path.join(save_dir, model_name, '{}-{}_{}'.format(encoder_n_layers, decoder_n_layers, hidden_size))
+            best_loss = loss
+            directory = os.path.join(save_dir, model_name)
+            torch.save({
+                'iteration': iteration,
+                'en': encoder.state_dict(),
+                'de': decoder.state_dict()
+            })
+            print(f"New best loss {best_loss} at iteration {iteration}")
+
+
+
         # Save checkpoint
         if (iteration % save_every == 0):
-            directory = os.path.join(save_dir, model_name, corpus_name, '{}-{}_{}'.format(encoder_n_layers, decoder_n_layers, hidden_size))
+            directory = os.path.join(save_dir, model_name + '{}-{}_{}'.format(encoder_n_layers, decoder_n_layers, hidden_size))
             if not os.path.exists(directory):
                 os.makedirs(directory)
             torch.save({

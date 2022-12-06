@@ -26,7 +26,7 @@ USE_CUDA = torch.cuda.is_available()
 device = torch.device("cuda" if USE_CUDA else "cpu")
 
 # Wanna see how the model performs?
-EVALUATE = False
+EVALUATE = True
 
 
 #%% HYPER PARAMETERS ##############################################################################
@@ -42,12 +42,11 @@ DROPOUT = 0.1
 BATCH_SIZE = 16
 
 ### Configure training/optimization
-EPOCHS = 100
 CLIPPING = 50.0
 TEACHER_FORCING_RATIO = 1.0
 LR = 0.0001
 DECODER_LEARNING_RATIO = 5.0
-N_ITERATIONS = 4000
+N_ITE_RATIONS = 4000
 PRINT_EVERY = 1
 SAVE_EVERY = 500
 
