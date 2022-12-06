@@ -147,7 +147,7 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
                 'iteration': iteration,
                 'en': encoder.state_dict(),
                 'de': decoder.state_dict()
-            })
+            }, os.path.join(directory,'models.tar'))
             print(f"New best loss {best_loss} at iteration {iteration}")
 
 
