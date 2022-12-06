@@ -4,7 +4,7 @@
 ### -- specify queue --
 #BSUB -q hpc
 ### -- set the job Name --
-#BSUB -J $chatbot
+#BSUB -J chatbot
 ### -- ask for number of cores (default: 1) --
 #BSUB -n 1
 ### -- specify that the cores must be on the same host --
@@ -33,6 +33,6 @@
 #module load python3/3.8.2
 source /zhome/06/a/147115/BSc_venv/bin/activate
 
-mkdir -p logs/cb_model2
+mkdir -p logs/cb_model3
 
-/zhome/06/a/147115/BSc_venv/bin/python3 -u /zhome/06/a/147115/02456_project_group_72/src/chatbot.py > /zhome/06/a/147115/02456_project_group_72/src/logs/cb_model2/output.txt
+/zhome/06/a/147115/BSc_venv/bin/python3 -u /zhome/06/a/147115/02456_project_group_72/src/chatbot.py > /zhome/06/a/147115/02456_project_group_72/src/logs/cb_model3/output.txt
