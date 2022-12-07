@@ -31,7 +31,7 @@ EVALUATE = True
 
 #%% HYPER PARAMETERS ##############################################################################
 ### Configure model
-MODEL_NAME = 'cb_model6'
+MODEL_NAME = 'cb_model7'
 ATTN_MODEL = 'dot'
 # ATTN_MODEL = 'general'
 # ATTN_MODEL = 'concat'
@@ -58,7 +58,7 @@ MIN_COUNT = 3    # Minimum word count threshold for trimming
 ### I had the data in a neighbouring directory
 DATA_NAME = "movie-corpus"
 #DATA_PATH = "./data/" + DATA_NAME
-DATA_PATH = "./data" #"../data/" + DATA_NAME
+DATA_PATH = "../data/" + DATA_NAME #"./data" 
 
 
 #%% MAIN ##########################################################################################
