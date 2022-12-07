@@ -48,7 +48,10 @@ if __name__ == '__main__':
 
     
     '''
-    dataset = reditDataset('Train',200, csv_dir)
+    csv = pd.read_csv(csv_dir,sep = '§', engine='python')
+    print(len(csv))
+
+    '''
     loader = DataLoader(dataset, batch_size=4)
     #print(len(loader))
     
@@ -56,7 +59,7 @@ if __name__ == '__main__':
     print(message)
     print(response)
     max_lengh = 0
-    
+    '''
     #for message, response in loader:
     #    print('check')
         #print("message size %s"%type(message))
