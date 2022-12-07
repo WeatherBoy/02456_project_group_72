@@ -31,21 +31,21 @@ EVALUATE = True
 
 #%% HYPER PARAMETERS ##############################################################################
 ### Configure model
-MODEL_NAME = 'cb_model4'
+MODEL_NAME = 'cb_model6'
 ATTN_MODEL = 'dot'
 # ATTN_MODEL = 'general'
 # ATTN_MODEL = 'concat'
 HIDDEN_SIZE = 500
 ENCODER_N_LAYERS = 2
 DECODER_N_LAYERS = 2
-DROPOUT = 0.25
+DROPOUT = 0.1
 BATCH_SIZE =  32
 
 ### Configure training/optimization
 CLIPPING = 50.0
 TEACHER_FORCING_RATIO = 0.8
-LR = 0.001
-DECODER_LEARNING_RATIO = 10.0
+LR = 0.0001
+DECODER_LEARNING_RATIO = 5
 N_ITERATIONS = 4000
 PRINT_EVERY = 20
 SAVE_EVERY = 500
@@ -58,7 +58,7 @@ MIN_COUNT = 3    # Minimum word count threshold for trimming
 ### I had the data in a neighbouring directory
 DATA_NAME = "movie-corpus"
 #DATA_PATH = "./data/" + DATA_NAME
-DATA_PATH = "../data/" + DATA_NAME
+DATA_PATH = "./data" #"../data/" + DATA_NAME
 
 
 #%% MAIN ##########################################################################################
@@ -177,3 +177,4 @@ if __name__ == '__main__':
 
         # Begin chatting (uncomment and run the following line to begin)
         evaluateInput(encoder, decoder, searcher, voc, MAX_LENGTH, device)
+    
