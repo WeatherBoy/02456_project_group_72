@@ -3,28 +3,45 @@ import pandas as pd
 from torch.utils.data import Dataset, DataLoader
 from dataset import redditDataset
 import torch
-from io import open
-import unicodedata
-import string
-import re
+# from io import open
 import random
 import torch.nn as nn
 from torch import optim
 import torch.nn.functional as F
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset, DatalsLoader
 from models import EncoderRNN, AttnDecoderRNN
 from vocabulary import Voc
+from argparse import ArgumentParser
+
+parser = ArgumentParser(description="seq_ja")
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# Hyper parameters with argpase
+
+parser.add_argument("-b", action="store", dest="batch_size", type=int, default=16,help="batch_size")
+parser.add_argument("-e", action="store", dest="EPOCHS",type=int,default=100, help="EPOCHS = iterations")
+parser.add_argument("-LR", action="store", dest="LR", type=int,default=1e-3, help="learning_rate")
+parser.add_argument("-max_l", action="store", dest="max_length", type=int,  default=100,help="Number of iteration per data point")
+parser.add_argument("-hid", action="store", dest="hid", type=int, default=256, help="hidden_size")
+
+args = parser.parse_args()
+
+BATCHSIZE = args.batch_size
+EPOCHS = args.EPOCHS
+LR = args.LR
+max_length = args.max_length
+hidden_size = args.hid
+# print(BATCHSIZE ,EPOCHS ,LR ,max_length ,hidden_size )
 
 ###
 # Hyper parameters
 ##
-BATCHSIZE = 16
-EPOCHS = 10
-LR = 1e-3
-max_length = 3
-hidden_size = 256
+# BATCHSIZE = 16
+# EPOCHS = 10
+# LR = 1e-3
+# max_length = 3
+# hidden_size = 256
 PAD_token = 0  # Used for padding short sentences
 SOS_token = 1  # Start-of-sentence token
 EOS_token = 2  # End-of-sentence token
@@ -62,7 +79,7 @@ def voc_build():
         for i in range(len(message)):
             voc.addSentence(message[i])
             voc.addSentence(response[i])
-    print("Counted words:", voc.num_words)
+    # print("Counted words:", voc.num_words)
     return voc
 voc_build()
 
@@ -218,9 +235,9 @@ def train():
             best_loss = val_loss
             best_epoc = epoch
 
-        print("current epoc :{}, current train loss :{} , current val loss :{}\n".format(epoch+1,train_loss, val_loss,))
+        # print("current epoc :{}, current train loss :{} , current val loss :{}\n".format(epoch+1,train_loss, val_loss,))
 
-        print("best epoc :{}, best val loss:{}\n".format(best_epoc+1,best_loss))
+    print("best epoc :{}, best val loss:{}\n".format(best_epoc+1,best_loss))
  
             
 
