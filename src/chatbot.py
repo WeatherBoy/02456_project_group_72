@@ -31,7 +31,7 @@ EVALUATE = True
 
 #%% HYPER PARAMETERS ##############################################################################
 ### Configure model
-MODEL_NAME = 'cb_model7'
+MODEL_NAME = 'cb_model1.1'
 ATTN_MODEL = 'dot'
 # ATTN_MODEL = 'general'
 # ATTN_MODEL = 'concat'
@@ -39,11 +39,11 @@ HIDDEN_SIZE = 500
 ENCODER_N_LAYERS = 2
 DECODER_N_LAYERS = 2
 DROPOUT = 0.1
-BATCH_SIZE =  32
+BATCH_SIZE =  16
 
 ### Configure training/optimization
 CLIPPING = 50.0
-TEACHER_FORCING_RATIO = 0.8
+TEACHER_FORCING_RATIO = 1.0
 LR = 0.0001
 DECODER_LEARNING_RATIO = 5
 N_ITERATIONS = 4000

@@ -1,5 +1,5 @@
 #!/bin/sh
-mkdir -p logs/cb_model7
+mkdir -p logs/cb_model1.1
 
 ### General options
 ### -- specify queue --
@@ -26,8 +26,8 @@ mkdir -p logs/cb_model7
 #BSUB -N
 ### -- Specify the output and error file. %J is the job-id --
 ### -- -o and -e mean append, -oo and -eo mean overwrite --
-#BSUB -o logs/cb_model7/Output_%J.out
-#BSUB -e logs/cb_model7/Error%J.err
+#BSUB -o logs/cb_model1.1/Output_%J.out
+#BSUB -e logs/cb_model1.1/Error%J.err
 
 # here follow the commands you want to execute
 
@@ -35,4 +35,4 @@ mkdir -p logs/cb_model7
 source /zhome/06/a/147115/BSc_venv/bin/activate
 
 
-/zhome/06/a/147115/BSc_venv/bin/python3 -u /zhome/06/a/147115/02456_project_group_72/src/chatbot.py > /zhome/06/a/147115/02456_project_group_72/src/logs/cb_model7/output.txt
+/zhome/06/a/147115/BSc_venv/bin/python3 -u /zhome/06/a/147115/02456_project_group_72/src/chatbot.py > /zhome/06/a/147115/02456_project_group_72/src/logs/cb_model1.1/output.txt

@@ -5,7 +5,8 @@
 
 import torch
 from torch import nn
-
+import numpy as np
+import matplotlib.pyplot as plt
 import random
 import os
 
@@ -107,6 +108,7 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
         start_iteration = checkpoint['iteration'] + 1
 
     best_loss = 100
+    train_loss = []
     # Training loop
     print("Training...")
     for iteration in range(start_iteration, n_iteration + 1):
@@ -131,6 +133,7 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
                      max_length=max_length,
                      teacher_forcing_ratio=teacher_forcing_ratio
                      )
+        train_loss.append(loss)
         print_loss += loss
 
         # Print progress
@@ -168,3 +171,11 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
                 'voc_dict': voc.__dict__,
                 'embedding': embedding.state_dict()
             }, os.path.join(directory, '{}_{}.tar'.format(iteration, 'checkpoint')))
+    
+    plt.figure()
+    plt.plot(train_loss)
+    plt.title('Learnign curve for chatbot')
+    plt.xlabel('iter')
+    plt.ylabel('loss')
+    plt.savefig('logs/'+model_name+'/learning_curve.jpg')
+
