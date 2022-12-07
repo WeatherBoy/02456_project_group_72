@@ -31,27 +31,27 @@ EVALUATE = True
 
 #%% HYPER PARAMETERS ##############################################################################
 ### Configure model
-MODEL_NAME = 'cb_model3'
+MODEL_NAME = 'cb_model4'
 ATTN_MODEL = 'dot'
 # ATTN_MODEL = 'general'
 # ATTN_MODEL = 'concat'
-HIDDEN_SIZE = 300
+HIDDEN_SIZE = 600
 ENCODER_N_LAYERS = 2
 DECODER_N_LAYERS = 2
-DROPOUT = 0.1
-BATCH_SIZE =  64
+DROPOUT = 0.25
+BATCH_SIZE =  32
 
 ### Configure training/optimization
 CLIPPING = 50.0
 TEACHER_FORCING_RATIO = 0.8
-LR = 0.0001
+LR = 0.001
 DECODER_LEARNING_RATIO = 10.0
 N_ITERATIONS = 4000
 PRINT_EVERY = 20
 SAVE_EVERY = 500
 
 ### Configure data parameters
-MAX_LENGTH = 20  # Maximum sentence length to consider
+MAX_LENGTH = 15  # Maximum sentence length to consider
 MIN_COUNT = 3    # Minimum word count threshold for trimming
 
 ### Change to path that matches where you put the data.
@@ -123,8 +123,8 @@ if __name__ == '__main__':
 
     # Initialize optimizers
     print('Building optimizers ...')
-    encoder_optimizer = optim.Adam(encoder.parameters(), lr=LR)
-    decoder_optimizer = optim.Adam(decoder.parameters(), lr=LR * DECODER_LEARNING_RATIO)
+    encoder_optimizer = optim.AdamW(encoder.parameters(), lr=LR)
+    decoder_optimizer = optim.AdamW(decoder.parameters(), lr=LR * DECODER_LEARNING_RATIO)
     if loadFilename_exists:
         encoder_optimizer.load_state_dict(encoder_optimizer_sd)
         decoder_optimizer.load_state_dict(decoder_optimizer_sd)
