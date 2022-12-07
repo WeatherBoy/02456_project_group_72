@@ -26,8 +26,8 @@ mkdir -p logs/cb_model1.1
 #BSUB -N
 ### -- Specify the output and error file. %J is the job-id --
 ### -- -o and -e mean append, -oo and -eo mean overwrite --
-#BSUB -o logs/cb_model1.1/Output_%J.out
-#BSUB -e logs/cb_model1.1/Error%J.err
+#BSUB -o Output_%J.out
+#BSUB -e Error%J.err
 
 # here follow the commands you want to execute
 
