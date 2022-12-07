@@ -106,7 +106,7 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
         checkpoint = torch.load(loadFilename, map_location=torch.device(device=device))
         start_iteration = checkpoint['iteration'] + 1
 
-    best_loss = 10
+    best_loss = 100
     # Training loop
     print("Training...")
     for iteration in range(start_iteration, n_iteration + 1):
